@@ -1,0 +1,104 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Aha Coding Test - API Docs",
+      "description": "Please dont find any bugs!",
+      "contact": {
+        "name": "Swagger API Team"
+      },
+      "license": {
+        "name": "MIT"
+      }
+    },
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+        "/signup": {
+            "post": {
+                "description": "Creates a new user. Duplicates are not allowed.",
+                "operationId": "addPet",
+                "produces": [
+                  "application/json"
+                ],
+                "parameters": [
+                    {
+                      "name": "pet",
+                      "in": "body",
+                      "description": "User to add.",
+                      "required": true,
+                      "schema": {
+                        "$ref": "#/definitions/NewUser"
+                      }
+                    }
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "signed up successfully",
+                      "schema": {
+                        "$ref": "#/definitions/NewUser"
+                      }
+                    },
+                    "default": {
+                      "description": "unexpected error",
+                      "schema": {
+                        "$ref": "#/definitions/ErrorModel"
+                      }
+                    }
+                  }
+            }
+        }
+    },
+    "definitions": {
+        "NewUser": {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NewUser"
+            },
+            {
+              "required": [
+                "email",
+                "password",
+                "password1"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "password1": {
+                    "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "ErrorModel": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+        }
+    }
+}

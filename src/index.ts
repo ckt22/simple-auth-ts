@@ -1,11 +1,13 @@
 import express, { Response, NextFunction } from 'express';
-import { OAuthRequest, ResponseError } from './@types';
+import { OAuthRequest, ResponseError } from './types';
 import 'dotenv/config';
 import http from 'http';
 import logger from 'morgan';
 import path from 'path';
 import router from './routes/index';
-const { auth } = require('express-openid-connect');
+import { auth } from 'express-openid-connect';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 
 // middlewares
 import loadUserMiddleware from './middlewares/loadUserHandler';
@@ -19,6 +21,8 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const config = {
   authRequired: false,
@@ -46,7 +50,7 @@ app.use(function (req, res, next) {
 });
 
 // Error handlers
-app.use(requestErrorHandler);
+// app.use(requestErrorHandler);
 
 http.createServer(app)
   .listen(port, () => {

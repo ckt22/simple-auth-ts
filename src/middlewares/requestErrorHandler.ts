@@ -5,6 +5,7 @@ interface RequestError extends Error {
 }
 
 const requestErrorHandler = (err: RequestError, req: Request, res: Response, next: NextFunction) => {
+    
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
