@@ -37,6 +37,9 @@ import {
         enum: Object.keys(AuthSource) as string[],
     })
     authSource: AuthSource;
+
+    @Column('boolean', { default: true })
+    isEmailVerified: boolean;
   
     @CreateDateColumn()
     createdAt: Date;

@@ -8,6 +8,7 @@ import router from './routes/index';
 import { auth } from 'express-openid-connect';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
+import { AppDataSource } from './database';
 
 // middlewares
 import loadUserMiddleware from './middlewares/loadUserHandler';
@@ -23,6 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+AppDataSource.initialize().then(() => console.log('database connected successfully')).catch((error) => console.log(error));
 
 const config = {
   authRequired: false,
@@ -50,7 +53,7 @@ app.use(function (req, res, next) {
 });
 
 // Error handlers
-// app.use(requestErrorHandler);
+app.use(requestErrorHandler);
 
 http.createServer(app)
   .listen(port, () => {
