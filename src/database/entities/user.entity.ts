@@ -51,7 +51,7 @@ import {
     })
     authSource: AuthSource;
 
-    @Column()
+    @Column('json')
     profile: any;
   
     @CreateDateColumn()

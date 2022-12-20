@@ -55,8 +55,9 @@
     </head>
 
     <body>
+        <%- include('partials/header') -%>
         <div class="container">
-            <h1>Log In</h1>
+            <h1 class="text-5xl font-bold mt-0 mb-6">Log In</h1>
     
             <% if(typeof alert != 'undefined') { %>
                 <% alert.forEach(function(error) { %>
@@ -85,36 +86,19 @@
                         title="invalid password format"
                         required>
                 </div>
-                <div class="form-group">
-                    <label for="confirm-password" class="form-label">Confirm Password</label>
-                    <input 
-                        type="password"
-                        class="form-control"
-                        name="confirm-password"
-                        id="confirm-password"
-                    >
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button 
+                    type="submit"
+                    class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                    >Submit
+                </button>
             </form>
     
-            <div class="password-criteria">
-                <h3>Password must contain the following:</h3>
-                <p id="password-criteria-letter" class="invalid">A <b>lowercase</b> letter</p>
-                <p id="password-criteria-capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-                <p id="password-criteria-number" class="invalid">A <b>number</b></p>
-                <p id="password-criteria-length" class="invalid">Minimum <b>8 characters</b></p>
-                <p id="password-criteria-special" class="invalid">A <b>special</b> character</p>
-                <p id="password-criteria-match" class="invalid">Both password matches</p>
-            </div>
-    
-            <p class="lead mt-4">Don't have an account? <a href="/signup">Sign Up</a></p>
+            <p class="lead mt-4">Don't have an account? <a class="text-purple-600 hover:text-purple-700 transition duration-300 ease-in-out mb-4" href="/signup">Sign Up</a></p>
 
-            <a href="/login/facebook" class="button">Log In With Facebook</a>
-            <a href="/login/google" class="button">Log In With Google</a>
+            <p><a href="/login/facebook" class="text-purple-600 hover:text-purple-700 transition duration-300 ease-in-out mb-4">Log In With Facebook</a></p>
+            
+            <p><a href="/login/google" class="text-purple-600 hover:text-purple-700 transition duration-300 ease-in-out mb-4">Log In With Google</a></p>
     
         </div>
     </body>
-
-    <script>
-    </script>
 </html>

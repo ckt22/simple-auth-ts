@@ -4,10 +4,6 @@ import sgMail from "@sendgrid/mail";
 console.log('service', process.env.SENDGRID_API_KEY);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-function sendEmail() {
+export function sendEmail() {
     
-}
-
-module.exports = {
-
 }
