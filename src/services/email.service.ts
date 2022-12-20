@@ -1,7 +1,6 @@
-const dotenv = require('dotenv');
-const sgMail = require('@sendgrid/mail');
+import "dotenv/config";
+import sgMail from "@sendgrid/mail";
 
-dotenv.load();
 console.log('service', process.env.SENDGRID_API_KEY);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 

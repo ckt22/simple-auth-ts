@@ -1,33 +1,11 @@
-import { Response, NextFunction, Request } from "express";
-import { OAuthRequest } from "../types";
+import express, { Response, NextFunction, Request } from "express";
+import apisRouter from "./apis";
 
-const router = require('express').Router();
-const { requiresAuth } = require('express-openid-connect');
+const router = express.Router();
+// import { requiresAuth } from "express-openid-connect";
+import viewsRouter from "./views";
 
-router.get('/', function (req: Request, res: Response, next: NextFunction) {
-  res.render('index', {
-    title: 'Auth0 Webapp sample Nodejs',
-    isAuthenticated: req.oidc.isAuthenticated()
-  });
-});
-
-router.get('/profile', requiresAuth(), function (req: OAuthRequest, res: Response, next: NextFunction) {
-  res.render('profile', {
-    userProfile: JSON.stringify(req.oidc.user, null, 2),
-    title: 'Profile page'
-  });
-});
-
-router.get('/signin', function (req: OAuthRequest, res: Response, next: NextFunction) {
-    res.render('signin');
-});
-
-router.get('/signup', function (req, res, next) {
-    res.render('signup');
-});
-
-router.post('/verify', function (req: OAuthRequest, res: Response, next: NextFunction) {
-
-});
+router.use(viewsRouter);
+router.use('/api', apisRouter);
 
 export default router;

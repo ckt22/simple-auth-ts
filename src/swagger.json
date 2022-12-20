@@ -11,7 +11,7 @@
         "name": "MIT"
       }
     },
-    "basePath": "/",
+    "basePath": "/api",
     "schemes": [
       "http"
     ],
@@ -22,10 +22,28 @@
       "application/json"
     ],
     "paths": {
-        "/signup": {
+        "/api/health": {
+            "get": {
+              "description": "Pings the server",
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK"
+                },
+                "default": {
+                  "description": "unexpected error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorModel"
+                  }
+                }
+              }
+            }
+        },
+        "/api/signup": {
             "post": {
                 "description": "Creates a new user. Duplicates are not allowed.",
-                "operationId": "addPet",
                 "produces": [
                   "application/json"
                 ],

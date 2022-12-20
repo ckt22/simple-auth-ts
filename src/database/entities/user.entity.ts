@@ -3,7 +3,8 @@ import {
     Column,
     PrimaryGeneratedColumn,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    BaseEntity
   } from 'typeorm';
   
   export enum UserType {
@@ -18,7 +19,7 @@ import {
   }
   
   @Entity({ name: 'users' })
-  export class User {
+  export class User extends BaseEntity {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
@@ -27,6 +28,18 @@ import {
   
     @Column({ select: false })
     password: string;
+
+    @Column('boolean', { default: true })
+    isEmailVerified: boolean;
+
+    @Column({ default: null })
+    facebook: string;
+
+    @Column({ default: null })
+    google: string;
+
+    @Column()
+    token: string;
   
     @Column('enum', {
       enum: Object.keys(UserType) as string[],
@@ -38,8 +51,8 @@ import {
     })
     authSource: AuthSource;
 
-    @Column('boolean', { default: true })
-    isEmailVerified: boolean;
+    @Column()
+    profile: any;
   
     @CreateDateColumn()
     createdAt: Date;
