@@ -24,4 +24,8 @@ viewsRouter.get('/signup', function (req, res, next) {
     res.render('signup');
 }); 
 
+viewsRouter.get('/email/confirm', function (req, res, next) {
+    res.render('confirmEmailAddress');
+})
+
 export default viewsRouter;

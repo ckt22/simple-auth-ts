@@ -8,8 +8,8 @@ import {
   } from 'typeorm';
   
   export enum UserType {
-    personal = 'personal',
-    corporate = 'corporate',
+    regular = 'regular',
+    admin = 'admin',
   }
 
   export enum AuthSource {
@@ -17,32 +17,29 @@ import {
     facebook = 'facebook',
     google = 'google'
   }
-  
-  @Entity({ name: 'users' })
-  export class User extends BaseEntity {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
 
+  export class CreateUserDto {
     @Column()
-    email: string;
+    email?: string;
   
     @Column({ select: false })
-    password: string;
+    password?: string;
 
     @Column('boolean', { default: true })
     isEmailVerified: boolean;
 
     @Column({ default: null })
-    facebook: string;
+    facebook?: string;
 
     @Column({ default: null })
-    google: string;
+    google?: string;
 
     @Column()
-    token: string;
-  
+    token?: string;
+
     @Column('enum', {
       enum: Object.keys(UserType) as string[],
+      default: UserType.regular
     })
     userType: UserType;
 
@@ -52,7 +49,46 @@ import {
     authSource: AuthSource;
 
     @Column('json')
-    profile: any;
+    profile?: any;
+
+  }
+  
+  @Entity({ name: 'users' })
+  export class User extends BaseEntity {
+    @PrimaryGeneratedColumn('increment')
+    id: number;
+
+    @Column()
+    email?: string;
+  
+    @Column({ select: false })
+    password?: string;
+
+    @Column('boolean', { default: true })
+    isEmailVerified: boolean;
+
+    @Column({ default: null })
+    facebook?: string;
+
+    @Column({ default: null })
+    google?: string;
+
+    @Column({ default: null })
+    token?: string;
+  
+    @Column('enum', {
+      enum: Object.keys(UserType) as string[],
+      default: UserType.regular
+    })
+    userType: UserType;
+
+    @Column('enum', {
+        enum: Object.keys(AuthSource) as string[],
+    })
+    authSource: AuthSource;
+
+    @Column('json', { default: null })
+    profile?: any;
   
     @CreateDateColumn()
     createdAt: Date;

@@ -2,9 +2,9 @@
 // Which should have been put in controllers
 
 import express from "express";
-import { LocalStragegy } from "passport-local";
-import { User } from "../database/entities/user.entity";
+import { AuthSource, User, UserType } from "../database/entities/user.entity";
 import * as userService from "../services/user.service";
+import passport from "../passport";
 
 const apisRouter = express.Router();
 
@@ -17,24 +17,29 @@ apisRouter.get('/error', function(req, res, next) {
 });
 
 apisRouter.post('/signup/local', async function (req, res, next) {
+
     const {
         email,
         password,
-        confirmPassword
+        'confirm-password': confirmPassword
     } = req.body;
 
-    // check for existing users
-    const existingUser = await User.findOne({
-        where: { email }
-    });
-    if (existingUser) {
-        throw new Error('user already registered');
-    };
-
     // validation
-    const isValid = userService.validateSignup(email, password, confirmPassword);
-    const user = new User();
-
+    const isValid = await userService.validateSignup(email, password, confirmPassword);
+    if (!isValid) {
+        console.log('not valid');
+        res.render('signup', { err_msg : 'email has been taken' });
+    } else {
+        await userService.createUser({ 
+            email, 
+            password, 
+            authSource: AuthSource.email,
+            userType: UserType.regular, 
+            isEmailVerified: false
+        });
+    
+        res.redirect('/email/confirm');
+    }
 });
 
 apisRouter.post('/signup/facebook');
@@ -42,5 +47,11 @@ apisRouter.post('/signup/facebook');
 apisRouter.post('/signup/google', function (req, res, next) {
 
 });
+
+apisRouter.post('/login/local',
+  passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
+  function(req, res, next) {
+    console.log(req.user);
+  });
 
 export default apisRouter;
