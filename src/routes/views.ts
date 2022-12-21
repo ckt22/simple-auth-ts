@@ -4,7 +4,8 @@ const viewsRouter = express.Router();
 
 viewsRouter.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'Auth0 Webapp sample Nodejs'
+    title: 'Auth0 Webapp sample Nodejs',
+    isAuthenticated: req.isAuthenticated()
   });
 });
 
@@ -17,15 +18,15 @@ viewsRouter.get('/profile', async function (req, res, next) {
 });
 
 viewsRouter.get('/signin', function (req, res, next) {
-    res.render('signin');
+  res.render('signin');
 });
 
 viewsRouter.get('/signup', function (req, res, next) {
-    res.render('signup');
+  res.render('signup');
 }); 
 
 viewsRouter.get('/email/confirm', function (req, res, next) {
-    res.render('confirmEmailAddress');
-})
+  res.render('confirmEmailAddress');
+});
 
 export default viewsRouter;
