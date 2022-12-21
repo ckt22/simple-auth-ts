@@ -4,6 +4,7 @@ import 'dotenv/config';
 import http from 'http';
 import logger from 'morgan';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'body-parser';
 import session from 'express-session';
 import router from './routes/index';
@@ -23,6 +24,7 @@ import { Session } from './database/entities/session.entity';
 const app = express();
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use(cookieParser());
 
 AppDataSource.initialize().then(() => console.log('database connected successfully')).catch((error) => console.log(error));
 
@@ -30,7 +32,7 @@ app.use(
   session({
     secret: 'secret',
     name: 'sessionToken',
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000000000 },
     store: new TypeormStore({
@@ -66,7 +68,7 @@ app.use(function (req, res, next) {
 });
 
 // Error handlers
-app.use(requestErrorHandler);
+// app.use(requestErrorHandler);
 
 http.createServer(app)
   .listen(port, () => {

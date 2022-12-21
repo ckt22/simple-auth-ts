@@ -1,4 +1,5 @@
 import express from 'express';
+import { AuthSource } from '../../database/entities/user.entity';
 
 declare global {
   namespace Express {
@@ -14,6 +15,10 @@ declare global {
 
 declare module 'express-session' {
   interface SessionData {
-      loggedInAt: Date
+      loggedInAt: Date,
+      userId: number,
+      authSource: AuthSource,
+      isOAuth: boolean,
+      returnTo: any
   };
 }

@@ -61,7 +61,7 @@ import {
     @Column()
     email?: string;
   
-    @Column({ select: false })
+    @Column({ select: false, default: null })
     password?: string;
 
     @Column('boolean', { default: true })

@@ -56,6 +56,8 @@
 
     <body>
         <%- include('partials/header') -%>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0&appId=886890589335715&autoLogAppEvents=1" nonce="mcBvs3dL"></script>
         <div class="container">
             <h1 class="text-5xl font-bold mt-0 mb-6">Register</h1>
     
@@ -118,6 +120,7 @@
             <p class="lead mt-4">Have An Account? <a class="text-purple-600 hover:text-purple-700 transition duration-300 ease-in-out mb-4" href="/signin">Login</a></p>
 
             <p><a href="/login/facebook" class="text-purple-600 hover:text-purple-700 transition duration-300 ease-in-out mb-4">Log In With Facebook</a></p>
+            <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div>
             <p><a href="/login/google" class="text-purple-600 hover:text-purple-700 transition duration-300 ease-in-out mb-4">Log In With Google</a></p>
     
         </div>
@@ -208,4 +211,15 @@
             }
         }
     </script>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+            appId            : '886890589335715', // cause you will see it anyway
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v15.0'
+            });
+        };
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 </html>

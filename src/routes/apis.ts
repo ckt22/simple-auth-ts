@@ -1,6 +1,6 @@
 // For simplicity, I am putting all apis here.
-
 import express from 'express';
+import querystring from 'node:querystring';
 import { AuthSource, User, UserType } from '../database/entities/user.entity';
 import * as userService from '../services/user.service';
 import passport from '../passport';
@@ -44,16 +44,11 @@ apisRouter.post('/signup/local', async function (req, res, next) {
     }
 });
 
-apisRouter.post('/signup/facebook');
-
-apisRouter.post('/signup/google', function (req, res, next) {
-
-});
-
 apisRouter.post('/login/local',
   passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
   function(req, res, next) {
     req.session.loggedInAt = new Date();
+    req.session.userId = req.user.id;
     res.redirect('/profile');
 });
 
@@ -62,8 +57,23 @@ apisRouter.get('/logout', function(req, res, next){
     req.logout(function(err) {
       if (err) { return next(err); }
       console.log('log out successfully');
-      res.redirect('/');
     });
+
+    if (req.session?.isOAuth) {
+        const logoutURL = new URL(
+            `https://${process.env.AUTH0_DOMAIN}/v2/logout`
+        );
+    
+        const searchString = querystring.stringify({
+            client_id: process.env.AUTH0_CLIENT_ID,
+            returnTo: 'http://localhost:3000'
+        });
+        logoutURL.search = searchString;
+    
+        res.redirect(logoutURL.toString());
+    } else {
+        res.redirect('/');
+    }
 });
 
 export default apisRouter;
