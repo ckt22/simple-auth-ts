@@ -37,6 +37,9 @@ import {
     @Column()
     token?: string;
 
+    @Column({ default: null })
+    emailVerificationCode?: string;
+
     @Column('enum', {
       enum: Object.keys(UserType) as string[],
       default: UserType.regular
@@ -63,6 +66,9 @@ import {
   
     @Column({ select: false, default: null })
     password?: string;
+
+    @Column({ default: null })
+    emailVerificationCode?: string;
 
     @Column('boolean', { default: true })
     isEmailVerified: boolean;

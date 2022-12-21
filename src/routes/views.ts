@@ -26,7 +26,33 @@ viewsRouter.get('/signup', function (req, res, next) {
 }); 
 
 viewsRouter.get('/email/confirm', function (req, res, next) {
-  res.render('confirmEmailAddress');
+  const { 
+    email
+  } = req.query;
+  if (!email) {
+    res.render('error', {
+      message: 'This test case is handled.'
+    });
+  }
+  res.render('confirmEmailAddress', {
+    email
+  });
+});
+
+viewsRouter.get('/password/forget', function (req, res, next) {
+  res.render('resetPassword');
+});
+
+viewsRouter.get('/password/reset', function (req, res, next) {
+  const {
+    token
+  } = req.query;
+  if (!token) {
+    res.render('error', {
+      message: 'This test case is handled.'
+    });
+  }
+  res.render('resetPassword');
 });
 
 export default viewsRouter;

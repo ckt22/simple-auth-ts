@@ -1,8 +1,10 @@
 // For simplicity, I am putting all apis here.
 import express from 'express';
 import querystring from 'node:querystring';
+import 'dotenv/config';
 import { AuthSource, User, UserType } from '../database/entities/user.entity';
 import * as userService from '../services/user.service';
+import * as emailService from '../services/email.service';
 import passport, { isAuthenticated } from '../passport';
 
 const apisRouter = express.Router();
@@ -29,18 +31,27 @@ apisRouter.post('/signup/local', async function (req, res, next) {
         console.log('not valid');
         res.render('signup', { err_msg : 'email has been taken' });
     } else {
+        const emailVerificationCode = String((Math.floor(Math.random()*90000) + 10000));
         await userService.createUser({ 
             email, 
             password, 
             authSource: AuthSource.email,
             userType: UserType.regular, 
             isEmailVerified: false,
+            emailVerificationCode,
             profile: {
                 name: email
             }
         });
-    
-        res.redirect('/email/confirm');
+        await emailService.sendEmail({
+            from: process.env.SENDGRID_API_EMAIL_SENDER,
+            to: email,
+            subject: `Kit Tang - ${emailVerificationCode} is your verification code.`,
+            text: '',
+            html: ''
+        });
+
+        res.redirect(`/email/confirm?email=${email}`);
     }
 });
 

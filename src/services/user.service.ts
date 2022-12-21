@@ -41,14 +41,8 @@ export async function createUser(user: CreateUserDto): Promise<User> {
         newUser.email = user.email;
         newUser.password = await bcrypt.hash(user.password, 10);
         newUser.isEmailVerified = false;
-    }
-
-    if (user.authSource === AuthSource.facebook) {
-
-    }
-
-    if (user.authSource === AuthSource.google) {
-
+        newUser.profile = user.profile;
+        newUser.emailVerificationCode = user.emailVerificationCode;
     }
 
     newUser.authSource = user.authSource;

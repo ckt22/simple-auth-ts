@@ -41,7 +41,7 @@
               }
             }
         },
-        "/api/signup": {
+        "/api/signup/local": {
             "post": {
                 "description": "Creates a new user. Duplicates are not allowed.",
                 "produces": [
@@ -49,7 +49,7 @@
                 ],
                 "parameters": [
                     {
-                      "name": "pet",
+                      "name": "user",
                       "in": "body",
                       "description": "User to add.",
                       "required": true,
