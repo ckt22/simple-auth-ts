@@ -18,7 +18,10 @@ viewsRouter.get('/profile', async function (req, res, next) {
   const user = await UserService.getUserDetails(req.user.id);
   res.render('profile', {
     title: 'Profile page',
-    userProfile: user.profile
+    userProfile: {
+      ...user.profile,
+      authSource: user.authSource,
+    }
   });
 });
 

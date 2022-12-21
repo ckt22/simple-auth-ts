@@ -6,7 +6,8 @@
   <body>
     <%- include('partials/header') -%>
     <p>Hello, <%= userProfile.name %></p>
-    <p>Your email is <%= userProfile.email %></p>
+    <p>Your email is <%= userProfile.email || "not captured by auth0" %></p>
+    <p>You registered from <%= userProfile.authSource %></p>
     <p>Do you want to change your name? </p>
     <form action="/api/user/profile" method="POST">
       <div class="form-group">
