@@ -53,6 +53,7 @@ apisRouter.post('/signup/google', function (req, res, next) {
 apisRouter.post('/login/local',
   passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
   function(req, res, next) {
+    req.session.loggedInAt = new Date();
     res.redirect('/profile');
 });
 
