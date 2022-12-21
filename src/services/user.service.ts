@@ -3,8 +3,6 @@ import { AuthSource, CreateUserDto, User } from '../database/entities/user.entit
 
 export async function validateSignup(email: string, password: string, confirmPassword: string): Promise<boolean> {
 
-
-    console.log(email, password, confirmPassword)
     // check for existing users
     const existingUser = await User.findOne({
         where: { email }
@@ -59,6 +57,15 @@ export async function createUser(user: CreateUserDto): Promise<User> {
     return newUser;
 }
 
-export function validateSignin(email: string, password: string) {
+export async function getUserDetails(userId: number): Promise<User> {
+    return await User.findOne({ where: { id: userId } });
+}
 
+export async function updateUserDetails(userId: number, name: string): Promise<User> {
+    const user = await User.findOne({ where: { id: userId } });
+    user.profile = {
+        ...user.profile,
+        name
+    }
+    return await user.save();
 }

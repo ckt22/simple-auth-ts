@@ -68,7 +68,7 @@ app.use(function (req, res, next) {
 });
 
 // Error handlers
-// app.use(requestErrorHandler);
+app.use(requestErrorHandler);
 
 http.createServer(app)
   .listen(port, () => {

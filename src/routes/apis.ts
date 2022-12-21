@@ -3,7 +3,7 @@ import express from 'express';
 import querystring from 'node:querystring';
 import { AuthSource, User, UserType } from '../database/entities/user.entity';
 import * as userService from '../services/user.service';
-import passport from '../passport';
+import passport, { isAuthenticated } from '../passport';
 
 const apisRouter = express.Router();
 
@@ -74,6 +74,16 @@ apisRouter.get('/logout', function(req, res, next){
     } else {
         res.redirect('/');
     }
+});
+
+// by restful standard, this should be patch. i know. i know.
+apisRouter.post('/user/profile', isAuthenticated, async function (req, res, next) {
+    const {
+        name
+    } = req.body;
+    await userService.updateUserDetails(req.user.id, name);
+
+    res.redirect('/profile');
 });
 
 export default apisRouter;
