@@ -1,5 +1,4 @@
 // For simplicity, I am putting all apis here.
-// Which should have been put in controllers
 
 import express from 'express';
 import { AuthSource, User, UserType } from '../database/entities/user.entity';
@@ -57,6 +56,7 @@ apisRouter.post('/login/local',
     res.redirect('/profile');
 });
 
+// an unwilling sacrifice since I am sticking to using ejs. sorry :P
 apisRouter.get('/logout', function(req, res, next){
     req.logout(function(err) {
       if (err) { return next(err); }

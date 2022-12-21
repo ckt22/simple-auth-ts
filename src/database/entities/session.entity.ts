@@ -1,37 +1,18 @@
-import {
-    Entity,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    PrimaryGeneratedColumn,
-    DeleteDateColumn,
-  } from 'typeorm';
-  
-  export enum OwnerType {
-    admin = 'admin',
-    user = 'user',
-  }
-  
-  @Entity({ name: 'sessions' })
-  export class Session {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column('enum', {
-      enum: Object.keys(OwnerType) as string[],
-    })
-    ownerType: OwnerType;
-  
-    @Column()
-    expiredAt: Date;
-  
-    @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
-    createdAt: Date;
-  
-    @UpdateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
-    updatedAt: Date;
-  
+import { ISession } from "connect-typeorm";
+import { Column, DeleteDateColumn, Entity, Index, PrimaryColumn } from "typeorm";
+
+@Entity()
+export class Session implements ISession {
+    @Index()
+    @Column("bigint")
+    public expiredAt = Date.now();
+
+    @PrimaryColumn("varchar", { length: 255 })
+    public id = "";
+
+    @Column("text")
+    public json = "";
+
     @DeleteDateColumn()
-    deletedAt: Date;
-  }
-  
+    public destroyedAt?: Date;
+}

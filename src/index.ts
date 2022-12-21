@@ -7,11 +7,10 @@ import path from 'path';
 import { json, urlencoded } from 'body-parser';
 import session from 'express-session';
 import router from './routes/index';
-// import { auth } from 'express-openid-connect'; // bye :/
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
 import { AppDataSource } from './database';
-import { AuthSource, User } from './database/entities/user.entity';
+import { TypeormStore } from "connect-typeorm";
 
 // middlewares
 import loadUserMiddleware from './middlewares/loadUserHandler';
@@ -19,17 +18,24 @@ import requestErrorHandler from './middlewares/requestErrorHandler';
 
 // passport
 import passport from './passport';
+import { Session } from './database/entities/session.entity';
 
 const app = express();
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
+AppDataSource.initialize().then(() => console.log('database connected successfully')).catch((error) => console.log(error));
+
 app.use(
   session({
     secret: 'secret',
-    resave: false,
+    name: 'sessionToken',
+    resave: true,
     saveUninitialized: false,
     cookie: { maxAge: 1000000000 },
+    store: new TypeormStore({
+      ttl: 86400
+    }).connect(AppDataSource.getRepository(Session))
   }),
 );
 
@@ -45,21 +51,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(passport.initialize());
 app.use(passport.session());
 
-AppDataSource.initialize().then(() => console.log('database connected successfully')).catch((error) => console.log(error));
-
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  baseURL: ''
-};
-
 const port = process.env.PORT || 3000;
-if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.NODE_ENV !== 'production') {
-  config.baseURL = `http://localhost:${port}`;
-}
-
-// I thought i could use auth0 widget directly but it seems that it's a trap haha
-// app.use(auth(config));
 
 // Middleware to make the `user` object available for all views
 app.use(loadUserMiddleware);
@@ -78,5 +70,5 @@ app.use(requestErrorHandler);
 
 http.createServer(app)
   .listen(port, () => {
-    console.log(`Listening on ${config.baseURL}`);
+    console.log(`Listening on ${port}`);
 });
