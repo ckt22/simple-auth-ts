@@ -9,7 +9,8 @@ import isLocalSignup from '../middlewares/isLocalSignupHandler';
 viewsRouter.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Auth0 Webapp sample Nodejs',
-    isAuthenticated: req.isAuthenticated()
+    isAuthenticated: req.isAuthenticated(),
+    isLocalSignup: !req.session?.isOAuth
   });
 });
 

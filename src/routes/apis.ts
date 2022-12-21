@@ -149,7 +149,16 @@ apisRouter.post('/user/password/reset', isAuthenticated, isLocalSignup, async fu
         id: userId
     } = req.user;
 
-    await userService.resetPassword(userId, password, newPassword, confirmNewPassword);
+    const { success, message } = await userService.resetPassword(userId, password, newPassword, confirmNewPassword);
+    if (!success) {
+        res.render('resetPassword', {
+            err_msg: message
+        })
+    } else {
+        res.render('resetPassword', {
+            msg: message
+        });
+    };
 
 });
 
