@@ -4,6 +4,7 @@
 
 <% if (locals.isAuthenticated) { %>
     <p>You are logged in. <a href="/profile" class="underline">View your profile</a>.</p>
+    <a href="/password/reset" class="underline">Reset my Password.</a>
 <% } else { %>
     <p>You are not logged in. <a href="/signin" class="underline">Login</a>.</p>
 <% } %>

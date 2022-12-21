@@ -1,7 +1,10 @@
-import express, { Response, NextFunction, Request } from 'express';
+import express from 'express';
 import * as UserService from '../services/user.service';
 import jwt from 'jsonwebtoken';
 const viewsRouter = express.Router();
+
+// middlewares
+import isLocalSignup from '../middlewares/isLocalSignupHandler';
 
 viewsRouter.get('/', function (req, res, next) {
   res.render('index', {
@@ -32,7 +35,8 @@ viewsRouter.get('/email/confirm', function (req, res, next) {
   } = req.query;
   if (!email) {
     res.render('error', {
-      message: 'This test case is handled.'
+      message: 'This test case is handled.',
+      error: {}
     });
   }
   res.render('confirmEmailAddress', {
@@ -44,7 +48,8 @@ viewsRouter.get('/email/verify', async function (req, res, next) {
   const token = req.query.token as string;
   if (!token) {
     res.render('error', {
-      message: 'This test case is handled.'
+      message: 'This test case is handled.',
+      error: {}
     });
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -55,7 +60,7 @@ viewsRouter.get('/email/verify', async function (req, res, next) {
   });
 });
 
-viewsRouter.get('/password/reset', function (req, res, next) {
+viewsRouter.get('/password/reset', isLocalSignup, function (req, res, next) {
   res.render('resetPassword');
 });
 

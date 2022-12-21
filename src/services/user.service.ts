@@ -1,6 +1,20 @@
 import bcrypt from 'bcrypt';
 import { AuthSource, CreateUserDto, User } from '../database/entities/user.entity';
 
+function isValidPassword(password: string, confirmPassword: string): boolean {
+    // ensure password meets security requirements
+    if (!password.match(/(?=.*\d)(?=.*[a-z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])(?=.*[A-Z]).{8,}/)) {
+        return false;
+    };
+
+    // ensure confirm password matches password
+    if (password !== confirmPassword) {
+        return false;
+    };
+
+    return true;
+}
+
 export async function validateSignup(email: string, password: string, confirmPassword: string): Promise<boolean> {
 
     // check for existing users
@@ -19,18 +33,55 @@ export async function validateSignup(email: string, password: string, confirmPas
         return false;
     };
 
-    // ensure password meets security requirements
-    if (!password.match(/(?=.*\d)(?=.*[a-z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])(?=.*[A-Z]).{8,}/)) {
+    if (!isValidPassword(password, confirmPassword)) {
         return false;
-    };
-
-    // ensure confirm password matches password
-    if (password !== confirmPassword) {
-        return false;
-    };
+    }
 
     return true;
 
+}
+
+export async function resetPassword(userId: number, currentPassword: string, newPassword: string, confirmNewPassword: string): Promise<{ success: boolean, message: string }> {
+    // check for existing users
+    const existingUser = await User.findOne({
+        where: { 
+            id: userId,
+            authSource: AuthSource.email
+        },
+        select: {
+            password: true
+        }
+    });
+
+    if (!existingUser) {
+        return {
+            success: false,
+            message: 'Invalid user id'
+        };
+    };
+
+    const isCorrectCurrentPassword = await bcrypt.compare(currentPassword, existingUser.password);
+    if (!isCorrectCurrentPassword) {
+        return {
+            success: false,
+            message: 'Wrong current password.'
+        }
+    }
+
+    if (!isValidPassword(newPassword, confirmNewPassword)) {
+        return {
+            success: false,
+            message: 'Invalid new password.'
+        }
+    }
+
+    existingUser.password = await bcrypt.hash(newPassword, 10);
+    await existingUser.save();
+    return {
+        success: true,
+        message: 'Password updated.'
+    }
+        
 }
 
 export async function createUser(user: CreateUserDto): Promise<User> {

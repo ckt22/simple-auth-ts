@@ -6,7 +6,11 @@ import jwt from 'jsonwebtoken';
 import { AuthSource, User, UserType } from '../database/entities/user.entity';
 import * as userService from '../services/user.service';
 import * as emailService from '../services/email.service';
-import passport, { isAuthenticated } from '../passport';
+import passport from '../passport';
+
+// middlewares
+import isAuthenticated from '../middlewares/isAuthenticatedHandler';
+import isLocalSignup from '../middlewares/isLocalSignupHandler';
 
 const apisRouter = express.Router();
 
@@ -124,13 +128,29 @@ apisRouter.post('/email/verify', async function (req, res, next) {
     });
 });
 
-// by restful standard, this should be patch.
+// by restful standard, this should be put.
 apisRouter.post('/user/profile', isAuthenticated, async function (req, res, next) {
     const {
         name
     } = req.body;
     await userService.updateUserDetails(req.user.id, name);
     res.redirect('/profile');
+});
+
+// by restful standard, this should be put.
+apisRouter.post('/user/password/reset', isAuthenticated, isLocalSignup, async function (req, res, next) {
+    const {
+        password,
+        'new-password': newPassword,
+        'confirm-new-password': confirmNewPassword
+    } = req.body;
+
+    const {
+        id: userId
+    } = req.user;
+
+    await userService.resetPassword(userId, password, newPassword, confirmNewPassword);
+
 });
 
 export default apisRouter;

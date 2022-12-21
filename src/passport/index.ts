@@ -91,15 +91,5 @@ passport.deserializeUser((user, done) => {
     }
     return done(null, { id: existingUser.id });
   }));
-  
-  /**
-   * Login Required middleware.
-   */
-  export const isAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/signin');
-  };
 
 export default passport;
