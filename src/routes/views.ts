@@ -1,5 +1,6 @@
 import express, { Response, NextFunction, Request } from 'express';
 import * as UserService from '../services/user.service';
+import jwt from 'jsonwebtoken';
 const viewsRouter = express.Router();
 
 viewsRouter.get('/', function (req, res, next) {
@@ -39,19 +40,22 @@ viewsRouter.get('/email/confirm', function (req, res, next) {
   });
 });
 
-viewsRouter.get('/password/forget', function (req, res, next) {
-  res.render('resetPassword');
-});
-
-viewsRouter.get('/password/reset', function (req, res, next) {
-  const {
-    token
-  } = req.query;
+viewsRouter.get('/email/verify', async function (req, res, next) {
+  const token = req.query.token as string;
   if (!token) {
     res.render('error', {
       message: 'This test case is handled.'
     });
   }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const { email } =(<{ email: string }>decoded);
+  const isVerified = await UserService.verifyEmailAddress(email);
+  res.render('emailVerified', {
+    result: isVerified
+  });
+});
+
+viewsRouter.get('/password/reset', function (req, res, next) {
   res.render('resetPassword');
 });
 

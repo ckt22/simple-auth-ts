@@ -11,11 +11,13 @@ interface message {
     text: string,
     html: string
   };
-export async function sendEmail(msg: message) {
+export async function sendEmail(msg: message): Promise<boolean> {
     try {
-        await sgMail.send(msg);
+        const resp = await sgMail.send(msg);
+        console.log(resp);
+        return true;
     } catch (e) {
         console.log(e);
+        return false;
     }
-
 }

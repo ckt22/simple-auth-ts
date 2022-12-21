@@ -60,6 +60,17 @@ export async function updateUserDetails(userId: number, name: string): Promise<U
     user.profile = {
         ...user.profile,
         name
-    }
+    };
     return await user.save();
+}
+
+export async function verifyEmailAddress(email: string): Promise<boolean> {
+    const user = await User.findOne({ where: { email, authSource: AuthSource.email }});
+    if (!user) {
+        return false;
+    } else {
+        user.isEmailVerified = true;
+        await user.save();
+        return true;
+    }
 }

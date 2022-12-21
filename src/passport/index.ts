@@ -32,7 +32,12 @@ passport.deserializeUser((user, done) => {
         password: true
       },
     });
-    if (!user) return done(undefined, false, { message: `Email ${email} not found.` });
+    if (!user) {
+      return done(undefined, false, { code: 'email-not-found', message: `Email ${email} not found.` });
+    };
+    if (!user.isEmailVerified) {
+      return done(undefined, false, { code: 'email-not-verified', message: `Email is not verified.`, email });
+    };
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
         return done(undefined, { id: user.id });
@@ -78,7 +83,8 @@ passport.deserializeUser((user, done) => {
         newUser.google = googleId;
       }
       newUser.profile = {
-        name: profile.displayName
+        name: profile.displayName,
+        email: newUser.email
       }
       await newUser.save();
       existingUser = newUser;
