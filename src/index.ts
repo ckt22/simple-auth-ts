@@ -27,7 +27,7 @@ app.use(urlencoded({ extended: true }));
 app.use(
   session({
     secret: 'secret',
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000000000 },
   }),
@@ -41,15 +41,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'secret',
-    resave: true,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000000000 },
-  }),
-);
 
 app.use(passport.initialize());
 app.use(passport.session());

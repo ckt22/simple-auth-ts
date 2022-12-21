@@ -1,20 +1,22 @@
-import passport from "passport";
-import bcrypt from "bcrypt";
-import { User } from "../database/entities/user.entity";
+import passport from 'passport';
+import bcrypt from 'bcrypt';
+import { User } from '../database/entities/user.entity';
 
-import passportLocal from "passport-local";
-import passportFacebook from "passport-facebook";
+import passportLocal from 'passport-local';
+import passportFacebook from 'passport-facebook';
+import passportGoogle from 'passport-google-oidc';
 
 const LocalStrategy = passportLocal.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
+const GoogleStrategy = passportGoogle.Strategy;
 
-passport.serializeUser<any, any>((req, user, done) => {
+passport.serializeUser<any, any>((req, user: any, done) => {
     done(undefined, user);
   });
   
   passport.deserializeUser(async (id: number, done) => {
     try {
-      const user = await User.findBy({id});
+      const user = await User.findOneBy({id});
       if (user) {
         done(null, user);
       } else {
@@ -28,7 +30,7 @@ passport.serializeUser<any, any>((req, user, done) => {
   /**
    * Sign in using Email and Password.
    */
-  passport.use(new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+  passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     const user = await User.findOne({ 
       where: {
         email: email.toLowerCase()
@@ -42,9 +44,9 @@ passport.serializeUser<any, any>((req, user, done) => {
     if (!user) return done(undefined, false, { message: `Email ${email} not found.` });
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
-        return done(undefined, user);
+        return done(undefined, { id: user.id });
     };
-    return done(undefined, false, { message: "Invalid email or password." });
+    return done(undefined, false, { message: 'Invalid email or password.' });
   }));
   
   /**
@@ -53,8 +55,8 @@ passport.serializeUser<any, any>((req, user, done) => {
   // passport.use(new FacebookStrategy({
   //   clientID: process.env.FACEBOOK_ID,
   //   clientSecret: process.env.FACEBOOK_SECRET,
-  //   callbackURL: "/auth/facebook/callback",
-  //   profileFields: ["name", "email", "link", "locale", "timezone"],
+  //   callbackURL: '/auth/facebook/callback',
+  //   profileFields: ['name', 'email', 'link', 'locale', 'timezone'],
   //   passReqToCallback: true
   // }, async (req: any, accessToken, refreshToken, profile, done) => {
   //   if (req.user) {
@@ -62,7 +64,7 @@ passport.serializeUser<any, any>((req, user, done) => {
   //       facebook: profile.id
   //     } });
   //     if (facebookUser) {
-  //       req.flash("errors", { msg: "There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account." });
+  //       req.flash('errors', { msg: 'There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
   //       done(null);
   //     } else {
   //       const user = await User.findOne({
@@ -107,7 +109,7 @@ passport.serializeUser<any, any>((req, user, done) => {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/signin");
+    res.redirect('/signin');
   };
 
 export default passport;
