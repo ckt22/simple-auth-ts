@@ -1,5 +1,5 @@
-import express, { Response, NextFunction } from 'express';
-import { OAuthRequest, ResponseError } from './types';
+import express from 'express';
+import cors from 'cors';
 import 'dotenv/config';
 import http from 'http';
 import logger from 'morgan';
@@ -25,6 +25,7 @@ const app = express();
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 
 AppDataSource.initialize().then(() => console.log('database connected successfully')).catch((error) => console.log(error));
 

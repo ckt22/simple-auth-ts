@@ -1,7 +1,7 @@
 {
-    "openapi": "3.0.0",
+  "openapi": "3.0.3",
     "info": {
-      "version": "1.0.0",
+      "version": "1.0.11",
       "title": "Aha Coding Test - API Docs",
       "description": "Please dont find any bugs!",
       "contact": {
@@ -11,16 +11,6 @@
         "name": "MIT"
       }
     },
-    "basePath": "/api",
-    "schemes": [
-      "http"
-    ],
-    "consumes": [
-      "application/json"
-    ],
-    "produces": [
-      "application/json"
-    ],
     "paths": {
         "/api/health": {
             "get": {
@@ -44,37 +34,113 @@
         "/api/signup/local": {
             "post": {
                 "description": "Creates a new user. Duplicates are not allowed.",
-                "produces": [
-                  "application/json"
-                ],
-                "parameters": [
-                    {
-                      "name": "user",
-                      "in": "body",
-                      "description": "User to add.",
-                      "required": true,
-                      "schema": {
-                        "$ref": "#/definitions/NewUser"
-                      }
-                    }
-                  ],
-                  "responses": {
-                    "200": {
-                      "description": "signed up successfully",
+                "requestBody": {
+                  "description": "Creates a new user. Duplicates are not allowed.",
+                  "content": {
+                    "application/json": {
                       "schema": {
                         "$ref": "#/definitions/NewUser"
                       }
                     },
-                    "default": {
-                      "description": "unexpected error",
+                    "application/x-www-form-urlencoded": {
                       "schema": {
-                        "$ref": "#/definitions/ErrorModel"
+                        "$ref": "#/definitions/NewUser"
                       }
                     }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "signed up successfully",
+                    "schema": {
+                      "$ref": "#/definitions/NewUser"
+                    }
+                  },
+                  "default": {
+                    "description": "unexpected error",
+                    "schema": {
+                      "$ref": "#/definitions/ErrorModel"
+                    }
                   }
+                }
             }
+        },
+        "/api/login/local": {
+          "post": {
+            "description": "Log In",
+            "tags": ["user"],
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+              {
+                "name": "user",
+                "in": "body",
+                "description": "User to add.",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/LogInData"
+                }
+              }
+            ],
+            "responses": {
+              "302": {
+                "description": "logged in successfully"
+              },
+              "default": {
+                "description": "unexpected error"
+              }
+            }
+          }
+        },
+        "/api/logout": {
+          "get": {
+            "description": "Log Out",
+            "tags": ["user"],
+            "produces": [
+              "application/json"
+            ],
+            "responses": {
+              "302": {
+                "description": "logged out successfully"
+              },
+              "default": {
+                "description": "unexpected error"
+              }
+            }
+          }
+        },
+        "/api/email/verify": {
+          "post": {
+            "description": "(Re)send verification email to user.",
+            "requestBody": {
+              "required": true,
+              "description": "Creates a new user. Duplicates are not allowed.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/definitions/EmailVerifyData"
+                  }
+                },
+                "application/x-www-form-urlencoded": {
+                  "schema": {
+                    "$ref": "#/definitions/EmailVerifyData"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "success."
+              },
+              "default": {
+                "description": "unexpected error"
+              }
+            }
+          }
         }
-    },
+      },
     "definitions": {
         "NewUser": {
           "type": "object",
@@ -97,6 +163,46 @@
                 },
                 "password1": {
                     "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "LogInData": {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/LogInData"
+            },
+            {
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "EmailVerifyData": {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/EmailVerifyData"
+            },
+            {
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
                 }
               }
             }
