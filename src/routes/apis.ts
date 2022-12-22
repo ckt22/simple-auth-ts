@@ -81,9 +81,14 @@ apisRouter.post('/login/local', async function (req, res, next) {
             });
             return;
         };
-        req.session.loggedInAt = new Date();
-        req.session.userId = req.user.id;
-        res.redirect('/profile');
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            };
+            req.session.loggedInAt = new Date();
+            req.session.userId = req.user.id;
+            res.redirect('/profile');
+        })
     })(req, res, next);
 });
 
@@ -136,6 +141,7 @@ apisRouter.post('/user/profile', isAuthenticated, async function (req, res, next
     const {
         name
     } = req.body;
+    console.log('updating', name);
     await userService.updateUserDetails(req.user.id, name);
     res.redirect('/profile');
 });

@@ -23,7 +23,7 @@ import { Session } from './database/entities/session.entity';
 
 const app = express();
 app.use(json());
-app.use(urlencoded({ extended: true }));
+app.use(urlencoded({ extended: true })); // required for posting data with ejs
 app.use(cookieParser());
 app.use(cors());
 

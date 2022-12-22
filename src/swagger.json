@@ -85,7 +85,7 @@
               }
             ],
             "responses": {
-              "302": {
+              "200": {
                 "description": "logged in successfully"
               },
               "default": {
@@ -102,7 +102,7 @@
               "application/json"
             ],
             "responses": {
-              "302": {
+              "200": {
                 "description": "logged out successfully"
               },
               "default": {
@@ -126,6 +126,50 @@
                 "application/x-www-form-urlencoded": {
                   "schema": {
                     "$ref": "#/definitions/EmailVerifyData"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "success."
+              },
+              "default": {
+                "description": "unexpected error"
+              }
+            }
+          }
+        },
+        "/user/profile": {
+          "get": {
+            "description": "Gets user profile. You must log in to access this api.",
+            "tags": ["user"],
+            "responses": {
+              "200": {
+                "description": "success."
+              },
+              "default": {
+                "description": "unexpected error"
+              }
+            }
+          }
+        },
+        "/api/user/profile": {
+          "post": {
+            "description": "Updates user profile. You must log in to access this api.",
+            "tags": ["user"],
+            "requestBody": {
+              "required": true,
+              "description": "Creates a new user. Duplicates are not allowed.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/definitions/UpdateProfileData"
+                  }
+                },
+                "application/x-www-form-urlencoded": {
+                  "schema": {
+                    "$ref": "#/definitions/UpdateProfileData"
                   }
                 }
               }
@@ -202,6 +246,24 @@
               ],
               "properties": {
                 "email": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "UpdateProfileData": {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/UpdateProfileData"
+            },
+            {
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
                   "type": "string"
                 }
               }

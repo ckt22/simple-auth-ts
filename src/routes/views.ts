@@ -14,8 +14,9 @@ viewsRouter.get('/', function (req, res, next) {
   });
 });
 
-viewsRouter.get('/profile', async function (req, res, next) {
-  const user = await UserService.getUserDetails(req.user.id);
+viewsRouter.get('/user/profile', async function (req, res, next) {
+  console.log(req.session);
+  const user = await UserService.getUserDetails(req.session.userId);
   res.render('profile', {
     title: 'Profile page',
     userProfile: {

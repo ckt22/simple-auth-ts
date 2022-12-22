@@ -29,9 +29,11 @@ passport.deserializeUser((user, done) => {
       select: {
         id: true,
         email: true,
-        password: true
+        password: true,
+        isEmailVerified: true
       },
     });
+    console.log('passport user: ', user);
     if (!user) {
       return done(undefined, false, { code: 'email-not-found', message: `Email ${email} not found.` });
     };
