@@ -141,7 +141,6 @@ apisRouter.post('/user/profile', isAuthenticated, async function (req, res, next
     const {
         name
     } = req.body;
-    console.log('updating', name);
     await userService.updateUserDetails(req.user.id, name);
     res.redirect('/user/profile');
 });

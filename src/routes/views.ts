@@ -12,14 +12,12 @@ import isLocalSignup from '../middlewares/isLocalSignupHandler';
 
 viewsRouter.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'Auth0 Webapp sample Nodejs',
     isAuthenticated: req.isAuthenticated(),
     isLocalSignup: !req.session?.isOAuth
   });
 });
 
 viewsRouter.get('/user/profile', async function (req, res, next) {
-  console.log(req.session);
   const user = await UserService.getUserDetails(req.session.userId);
   res.render('profile', {
     title: 'Profile page',

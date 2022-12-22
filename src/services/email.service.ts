@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import sgMail from '@sendgrid/mail';
 
-console.log('service', process.env.SENDGRID_API_KEY);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 interface message {
@@ -13,8 +12,7 @@ interface message {
   };
 export async function sendEmail(msg: message): Promise<boolean> {
     try {
-        const resp = await sgMail.send(msg);
-        console.log(resp);
+        await sgMail.send(msg);
         return true;
     } catch (e) {
         console.log(e);

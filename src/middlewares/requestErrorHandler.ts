@@ -7,7 +7,6 @@ interface RequestError extends Error {
 // standardize errors
 const requestErrorHandler = (err: RequestError, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500);
-    console.log('handler triggered');
     if (req.path.includes('api')) {
       res.status(400).json({
         code: 1,

@@ -54,8 +54,6 @@ passport.deserializeUser((user, done) => {
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: process.env.AUTH0_CALLBACK_URL
   }, async function (accessToken, refreshToken, params, profile, done) {
-    console.log('strategy values');
-    console.log((profile));
     // user check
     let existingUser: User, authSource: AuthSource, facebookId, googleId;
     if (profile.provider === 'google-oauth2') {
