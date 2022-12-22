@@ -1,9 +1,13 @@
 import express from 'express';
-import * as UserService from '../services/user.service';
 import jwt from 'jsonwebtoken';
+
 const viewsRouter = express.Router();
 
+import * as UserService from '../services/user.service';
+import * as SessionService from '../services/session.service';
+
 // middlewares
+import isAuthenticated from '../middlewares/isAuthenticatedHandler';
 import isLocalSignup from '../middlewares/isLocalSignupHandler';
 
 viewsRouter.get('/', function (req, res, next) {
@@ -67,6 +71,11 @@ viewsRouter.get('/email/verify', async function (req, res, next) {
 
 viewsRouter.get('/password/reset', isLocalSignup, function (req, res, next) {
   res.render('resetPassword');
+});
+
+viewsRouter.get('/user/dashboard', isAuthenticated, async function (req, res, next) {
+  const usersWithSessionStatistics = await SessionService.getUserSessionStatistics();
+  res.render('dashboard', { users: usersWithSessionStatistics });
 });
 
 export default viewsRouter;

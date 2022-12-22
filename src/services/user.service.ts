@@ -61,21 +61,27 @@ export async function resetPassword(userId: number, currentPassword: string, new
         };
     };
 
-    console.log(currentPassword, existingUser.password);
     const isCorrectCurrentPassword = await bcrypt.compare(currentPassword, existingUser.password);
     if (!isCorrectCurrentPassword) {
         return {
             success: false,
             message: 'Wrong current password.'
         }
-    }
+    };
+
+    if (currentPassword === newPassword) {
+        return {
+            success: false,
+            message: 'Your new password is the same as your current password.'
+        }
+    };
 
     if (!isValidPassword(newPassword, confirmNewPassword)) {
         return {
             success: false,
             message: 'Invalid new password.'
         }
-    }
+    };
 
     existingUser.password = await bcrypt.hash(newPassword, 10);
     await existingUser.save();
