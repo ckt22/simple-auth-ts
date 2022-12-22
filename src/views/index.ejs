@@ -3,7 +3,7 @@
 <h1 class="text-4xl">Hi</h1>
 
 <% if (locals.isAuthenticated) { %>
-    <p>You are logged in. <a href="/profile" class="underline">View your profile</a>.</p>
+    <p>You are logged in. <a href="/user/profile" class="underline">View your profile</a>.</p>
     <% if (locals.isLocalSignup) { %>
         <a href="/password/reset" class="underline">Reset my Password.</a>
     <% } %>

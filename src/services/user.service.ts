@@ -49,6 +49,7 @@ export async function resetPassword(userId: number, currentPassword: string, new
             authSource: AuthSource.email
         },
         select: {
+            id: true,
             password: true
         }
     });
@@ -60,6 +61,7 @@ export async function resetPassword(userId: number, currentPassword: string, new
         };
     };
 
+    console.log(currentPassword, existingUser.password);
     const isCorrectCurrentPassword = await bcrypt.compare(currentPassword, existingUser.password);
     if (!isCorrectCurrentPassword) {
         return {

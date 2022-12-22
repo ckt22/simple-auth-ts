@@ -87,7 +87,7 @@ apisRouter.post('/login/local', async function (req, res, next) {
             };
             req.session.loggedInAt = new Date();
             req.session.userId = req.user.id;
-            res.redirect('/profile');
+            res.redirect('/user/profile');
         })
     })(req, res, next);
 });
@@ -143,13 +143,13 @@ apisRouter.post('/user/profile', isAuthenticated, async function (req, res, next
     } = req.body;
     console.log('updating', name);
     await userService.updateUserDetails(req.user.id, name);
-    res.redirect('/profile');
+    res.redirect('/user/profile');
 });
 
 // by restful standard, this should be put.
 apisRouter.post('/user/password/reset', isAuthenticated, isLocalSignup, async function (req, res, next) {
     const {
-        password,
+        'current-password': currentPassword,
         'new-password': newPassword,
         'confirm-new-password': confirmNewPassword
     } = req.body;
@@ -158,7 +158,7 @@ apisRouter.post('/user/password/reset', isAuthenticated, isLocalSignup, async fu
         id: userId
     } = req.user;
 
-    const { success, message } = await userService.resetPassword(userId, password, newPassword, confirmNewPassword);
+    const { success, message } = await userService.resetPassword(userId, currentPassword, newPassword, confirmNewPassword);
     if (!success) {
         res.render('resetPassword', {
             err_msg: message
