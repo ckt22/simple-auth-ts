@@ -23,7 +23,7 @@
                   "description": "OK"
                 },
                 "default": {
-                  "description": "unexpected error",
+                  "description": "Unexpected error",
                   "schema": {
                     "$ref": "#/definitions/ErrorModel"
                   }
@@ -86,7 +86,7 @@
                 "description": "Log in failed. Potentially because of invalid credentials."
               },
               "default": {
-                "description": "unexpected error."
+                "description": "Unexpected error."
               }
             }
           }
@@ -103,7 +103,7 @@
                 "description": "logged out successfully"
               },
               "default": {
-                "description": "unexpected error"
+                "description": "Unexpected error"
               }
             }
           }
@@ -129,10 +129,10 @@
             },
             "responses": {
               "200": {
-                "description": "success."
+                "description": "Success."
               },
               "default": {
-                "description": "unexpected error"
+                "description": "Unexpected error"
               }
             }
           }
@@ -160,7 +160,7 @@
             "tags": ["user"],
             "responses": {
               "200": {
-                "description": "success."
+                "description": "Success."
               },
               "403": {
                 "description": "Forbidden. You must log in to call this API."
@@ -193,13 +193,46 @@
             },
             "responses": {
               "200": {
-                "description": "success."
+                "description": "Success."
               },
               "403": {
                 "description": "Forbidden. You must log in to call this API."
               },
               "default": {
-                "description": "unexpected error"
+                "description": "Unexpected error"
+              }
+            }
+          }
+        },
+        "/api/user/password/reset": {
+          "post": {
+            "description": "Resets the user password. You must log in to access this api.",
+            "tags": ["user"],
+            "requestBody": {
+              "required": true,
+              "description": "Resets the user password.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/definitions/ResetPasswordData"
+                  }
+                },
+                "application/x-www-form-urlencoded": {
+                  "schema": {
+                    "$ref": "#/definitions/ResetPasswordData"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success."
+              },
+              "403": {
+                "description": "Forbidden. You must log in to call this API."
+              },
+              "default": {
+                "description": "Unexpected error"
               }
             }
           }
@@ -284,6 +317,33 @@
               ],
               "properties": {
                 "name": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "ResetPasswordData": {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ResetPasswordData"
+            },
+            {
+              "required": [
+                "current-password",
+                "new-password",
+                "confirm-new-password"
+
+              ],
+              "properties": {
+                "current-password": {
+                  "type": "string"
+                },
+                "new-password": {
+                  "type": "string"
+                },
+                "confirm-new-password": {
                   "type": "string"
                 }
               }
