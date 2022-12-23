@@ -73,7 +73,15 @@ viewsRouter.get('/password/reset', isLocalSignup, function (req, res, next) {
 
 viewsRouter.get('/user/dashboard', isAuthenticated, async function (req, res, next) {
   const usersWithSessionStatistics = await SessionService.getUserSessionStatistics();
-  res.render('dashboard', { users: usersWithSessionStatistics });
+  const allUsers = await UserService.getAllUsers();
+  const activeSessionsToday = await SessionService.getUsersWithActiveSessionToday();
+  const weeklyUserSessions = await SessionService.getUserSessionsInSevenDays();
+  res.render('dashboard', {
+    ...activeSessionsToday,
+    ...weeklyUserSessions,
+    registeredUsersCount: allUsers.length,
+    users: usersWithSessionStatistics
+  });
 });
 
 export default viewsRouter;

@@ -56,7 +56,25 @@
 
     <body>
         <%- include('partials/header') -%>
-        <h1 class="text-5xl font-bold mt-0 mb-6">User session and statistics</h1>
+        <h1 class="text-5xl font-bold mt-0 mb-6">Platform Statistics</h1>
+        <div class="flex space-x-4">
+            <div class="mr-3 p-3 shadow-lg bg-white">
+                <h1 class="text-3xl"><%= registeredUsersCount %></h1>
+                <p>users registered.</p>
+            </div>
+            <div class="mr-3 p-3 shadow-lg bg-white"> 
+                <h1 class="text-3xl"><%= numberOfActiveUsersToday %></h1> 
+                <p>active users today. They are: <%= JSON.stringify(usersWithActiveSessionToday) %></p>
+            </div>
+            <div class="p-3 shadow-lg bg-white">
+                <h1 class="text-3xl"><%= averageSessionsInSevenDays %></h1> 
+                <p>average sessions in this week. Daily stats:</p>
+                <% Object.keys(weeklySessionsByDate).forEach(function(prop) { %>
+                    <p> <%= prop %>: <%= weeklySessionsByDate[prop] %> </p> 
+                <% }); %>
+            </div>
+        </div>
+        <h1 class="text-5xl font-bold mt-0 mb-6">User Data</h1>
         <table>
             <tr>
                <th>User Id</th>
@@ -67,7 +85,7 @@
                <th>Registered At</th>
             </tr>
          
-            <% for (let i = 0; i < users.length; /* I save the data in a variable 'users', I don't know how you named your variable  */  i++) { %>
+            <% for (let i = 0; i < users.length; i++) { %>
              <tr>
                <td><%= users[i].UID %></td>
                <td><%= users[i].email %></td>

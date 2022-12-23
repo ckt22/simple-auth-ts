@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt';
 import { AuthSource, User } from '../database/entities/user.entity';
 
 import passportLocal from 'passport-local';
-import passportFacebook from 'passport-facebook';
-import passportGoogle from 'passport-google-oidc';
 import passportAuth0 from 'passport-auth0';
 
 const LocalStrategy = passportLocal.Strategy;

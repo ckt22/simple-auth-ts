@@ -133,3 +133,7 @@ export async function verifyEmailAddress(email: string): Promise<boolean> {
         return true;
     }
 }
+
+export async function getAllUsers(): Promise<User[]> {
+    return await User.find({});
+}
