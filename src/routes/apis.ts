@@ -68,7 +68,7 @@ apisRouter.post('/login/local', async function (req, res, next) {
                 res.redirect(`/email/confirm?email=${encodeURIComponent(info.email)}`);
                 return;
             }
-            res.render('signin', {
+            res.status(400).render('signin', {
                 err_msg: info.message
             });
             return;
