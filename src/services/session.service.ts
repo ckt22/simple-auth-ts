@@ -43,7 +43,6 @@ export async function getUserSessionsInSevenDays(): Promise<GetUserSessionInSeve
     const activeSessionsInSevenDays: [GetUserSessionInSevenDaysQueryData] = await Session.query(getSessionsInSevenDaysQuery());
     const weeklySessionsByDate = {};
     let totalNumberOfSessionsThisWeek = 0;
-    console.log(activeSessionsInSevenDays);
     for (let day = 0; day < 7; day++) {
         const formattedDate = format(sub(new Date(), { days: day }), 'YYY-MM-dd');
         let sess = activeSessionsInSevenDays.find(sess => format(sess.loginDate, 'YYY-MM-dd') === formattedDate);
