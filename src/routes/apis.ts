@@ -60,14 +60,6 @@ apisRouter.post('/signup/local', async function (req, res, next) {
     }
 });
 
-// apisRouter.post('/login/local',
-//   passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
-//   function(req, res, next) {
-//     req.session.loggedInAt = new Date();
-//     req.session.userId = req.user.id;
-//     res.redirect('/profile');
-// });
-
 apisRouter.post('/login/local', async function (req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) { return next(err); }
@@ -106,7 +98,7 @@ apisRouter.get('/logout', function(req, res, next){
     
         const searchString = querystring.stringify({
             client_id: process.env.AUTH0_CLIENT_ID,
-            returnTo: 'http://localhost:3000'
+            returnTo: process.env.APP_HOST
         });
         logoutURL.search = searchString;
     
