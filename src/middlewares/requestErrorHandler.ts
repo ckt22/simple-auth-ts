@@ -14,7 +14,7 @@ const requestErrorHandler = (err: RequestError, req: Request, res: Response, nex
         message: err.message
       });
     } else {
-      res.render('error', {
+      res.status(400).render('error', {
         message: err.message,
         error: process.env.NODE_ENV !== 'production' ? err : {}
       });

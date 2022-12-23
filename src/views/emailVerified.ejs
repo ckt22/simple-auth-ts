@@ -56,7 +56,11 @@
 
     <body>
         <%- include('partials/header') -%>
-        <h1>Your email is verified</h1>
-        <p><a href="/signin" class="underline">Login now</a></p>
+        <% if (locals.user) { %>
+            <h1>Your email is verified</h1>
+            <p><a href="/signin" class="underline">Login now</a></p>
+        <% } else { %>
+            <h1>There is something wrong with verifying your email. Seek help.</h1>
+        <% } %>
     </body>
 </html>

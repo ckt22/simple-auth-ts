@@ -41,8 +41,8 @@ viewsRouter.get('/email/confirm', function (req, res, next) {
     email
   } = req.query;
   if (!email) {
-    res.render('error', {
-      message: 'This test case is handled.',
+    res.status(400).render('error', {
+      message: 'Email not found.',
       error: {}
     });
   }
@@ -54,15 +54,16 @@ viewsRouter.get('/email/confirm', function (req, res, next) {
 viewsRouter.get('/email/verify', async function (req, res, next) {
   const token = req.query.token as string;
   if (!token) {
-    res.render('error', {
-      message: 'This test case is handled.',
+    res.status(401).render('error', {
+      message: 'Token not found.',
       error: {}
     });
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const { email } =(<{ email: string }>decoded);
   const isVerified = await UserService.verifyEmailAddress(email);
-  res.render('emailVerified', {
+  const status = isVerified ? 200 : 400;
+  res.status(status).render('emailVerified', {
     result: isVerified
   });
 });
