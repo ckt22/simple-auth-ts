@@ -52,23 +52,17 @@
                 },
                 "responses": {
                   "200": {
-                    "description": "signed up successfully",
-                    "schema": {
-                      "$ref": "#/definitions/NewUser"
-                    }
+                    "description": "Signed up successfully"
                   },
                   "default": {
-                    "description": "unexpected error",
-                    "schema": {
-                      "$ref": "#/definitions/ErrorModel"
-                    }
+                    "description": "Unexpected error"
                   }
                 }
             }
         },
         "/api/login/local": {
           "post": {
-            "description": "Log In",
+            "description": "Login by email and password.",
             "tags": ["user"],
             "produces": [
               "application/json"
@@ -86,10 +80,13 @@
             ],
             "responses": {
               "200": {
-                "description": "logged in successfully"
+                "description": "Logged in successfully."
+              },
+              "400": {
+                "description": "Log in failed. Potentially because of invalid credentials."
               },
               "default": {
-                "description": "unexpected error"
+                "description": "unexpected error."
               }
             }
           }
@@ -146,10 +143,30 @@
             "tags": ["user"],
             "responses": {
               "200": {
-                "description": "success."
+                "description": "Success."
+              },
+              "403": {
+                "description": "Forbidden. You must log in to call this API."
               },
               "default": {
-                "description": "unexpected error"
+                "description": "Unexpected error"
+              }
+            }
+          }
+        },
+        "/user/dashboard": {
+          "get": {
+            "description": "Gets the dashbord. You must log in to access this api.",
+            "tags": ["user"],
+            "responses": {
+              "200": {
+                "description": "success."
+              },
+              "403": {
+                "description": "Forbidden. You must log in to call this API."
+              },
+              "default": {
+                "description": "Unexpected error"
               }
             }
           }
@@ -177,6 +194,9 @@
             "responses": {
               "200": {
                 "description": "success."
+              },
+              "403": {
+                "description": "Forbidden. You must log in to call this API."
               },
               "default": {
                 "description": "unexpected error"
