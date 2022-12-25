@@ -118,7 +118,7 @@ apisRouter.post('/email/verify', async function (req, res, next) {
     const token = jwt.sign({ email }, process.env.JWT_SECRET);
     const success = await emailService.sendEmail({
         from: process.env.SENDGRID_API_EMAIL_SENDER,
-        to: 'tangck0202@gmail.com',
+        to: email,
         subject: `Aha Coding Test - Please verify your email.`,
         text: 'some text.',
         html: `<a href=${process.env.APP_HOST}/email/verify?token=${token}>Click here to verify your email address.</a>`
