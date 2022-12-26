@@ -51,7 +51,7 @@ import {
     })
     authSource: AuthSource;
 
-    @Column('json')
+    @Column('simple-json')
     profile?: any;
 
   }
