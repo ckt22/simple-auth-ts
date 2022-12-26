@@ -54,7 +54,7 @@ export async function getUserSessionsInSevenDays(): Promise<GetUserSessionInSeve
         }
     }
     return {
-        averageSessionsInSevenDays: Math.round(totalNumberOfSessionsThisWeek/7),
+        averageSessionsInSevenDays: Math.ceil(totalNumberOfSessionsThisWeek / 7), // round up to the nearest integer
         weeklySessionsByDate
     }
 }
