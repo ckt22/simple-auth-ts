@@ -54,7 +54,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware to make the `user` object available for all views
 app.use(loadUserMiddleware);
@@ -72,6 +72,6 @@ app.use(function (req, res, next) {
 app.use(requestErrorHandler);
 
 http.createServer(app)
-  .listen(port, () => {
-    console.log(`Listening on ${port}`);
+  .listen(PORT, () => {
+    console.log(`Listening on ${PORT}`);
 });
