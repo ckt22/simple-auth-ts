@@ -2,6 +2,11 @@
 
 I always liked such kind to take home assessments since it not only proves that I have the ability to code, but also I am absolutely keen for the position.
 
+Tech Stack:
+- Express (Nodejs, Typescript)
+- MySQL
+- EJS View Engine
+
 Things I attempted:
 - Proper coding structure for the backend. Except that I combined controllers and routes.
 - Complex queries that handles the data. Check `queryBuilder.ts`.
