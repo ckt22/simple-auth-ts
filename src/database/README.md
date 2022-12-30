@@ -2,7 +2,6 @@
 
 I am using JawsDB MySQL since it supports JSON data structure.
 Scripts:
-
 ```
 heroku addons:create jawsdb:kitefin
 # Check the connection string
