@@ -16,9 +16,7 @@ Things I attempted:
 Things I did not attempt:
 - Making a fancy frontend. Apparently because it will take me a longer time.
 - Sticking to the RESTful standard in designing the APIs. Since I have to cater for rendering the html pages.
-- Admin-protect the `/user/dashboard` route. As you can see that I actually specified user type in the users database.
+- Admin-protect the `/user/dashboard` route.
 - Dockerizing my application.
-
-Please forgive my frontend `ejs` codes since I am too lazy to start a React/Next app. I prefer focusing on my Typescript. Thanks you team.
 
 Live App location: `https://aha-code-test.herokuapp.com`
